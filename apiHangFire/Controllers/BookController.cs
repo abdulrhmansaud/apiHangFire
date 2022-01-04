@@ -32,7 +32,8 @@ namespace apiHangFire.Controllers
              var query = new GetAllBooksQuery();
              var result = await _mediator.Send(query);
 
-            
+             BackgroundJob.Enqueue(() => hangFireJobs.CreateJobAllbooks());
+
             return Ok(result);
        }
 
@@ -41,22 +42,19 @@ namespace apiHangFire.Controllers
          
           var query = new GetBooksByIdQuery(id);
           var result = await _mediator.Send(query);
+
+            BackgroundJob.Enqueue(() => hangFireJobs.GetBooksById());
+
           return result != null ? Ok(result) : NotFound();
        }
 
        [HttpPost]
        public async Task<ActionResult> CreateBook([FromBody] CreateBookCommands commnds){
 
-          
-
             var result = await _mediator.Send(commnds);
-
             var jobId = BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
 
             return Ok(jobId);
        }
-
-
-
     }
 }
