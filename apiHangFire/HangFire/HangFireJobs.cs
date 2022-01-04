@@ -10,17 +10,17 @@ namespace apiHangFire.HangFire
 
         public void CreateJobForAddBook()
         {
-            Console.WriteLine("The Book Was Created Succesfully");
+          
         }
 
         public void CreateJobAllbooks()
         {
-            Console.WriteLine(" Succesfully");
+          
         }
 
         public void GetBooksById()
         {
-            Console.WriteLine(" Succesfully");
+            
         }
 
 

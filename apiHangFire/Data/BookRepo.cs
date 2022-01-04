@@ -6,6 +6,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using apiHangFire.Commands;
+using Hangfire;
+using apiHangFire.HangFire;
 
 namespace apiHangFire.Data
 {
@@ -21,10 +23,12 @@ namespace apiHangFire.Data
            if(books == null){
               throw new ArgumentNullException(nameof(books));
            }
+           
             await this._dbconnect.books.AddAsync(books);
         }
 
         public async Task<IEnumerable<book>> GetAllBooks() {
+
 
             return await _dbconnect.books.ToListAsync();
         }

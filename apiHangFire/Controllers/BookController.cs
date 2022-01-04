@@ -33,7 +33,7 @@ namespace apiHangFire.Controllers
              var result = await _mediator.Send(query);
 
              BackgroundJob.Enqueue(() => hangFireJobs.CreateJobAllbooks());
-
+           
             return Ok(result);
        }
 
@@ -50,11 +50,19 @@ namespace apiHangFire.Controllers
 
        [HttpPost]
        public async Task<ActionResult> CreateBook([FromBody] CreateBookCommands commnds){
+            try
+            {
+                await _mediator.Send(commnds);
+                BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
+                return Ok("Book added Successfully");
 
-            var result = await _mediator.Send(commnds);
-            var jobId = BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
+            }
+            catch (Exception ex)
+            {
+  
+               return StatusCode(500);
+             }
 
-            return Ok(jobId);
        }
     }
 }
