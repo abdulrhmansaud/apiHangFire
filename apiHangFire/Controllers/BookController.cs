@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using apiHangFire.Commands;
 using System;
 using Hangfire;
+using apiHangFire.HangFire;
 
 namespace apiHangFire.Controllers
 { 
@@ -18,6 +19,8 @@ namespace apiHangFire.Controllers
     public class BookController : ControllerBase
     {
         private readonly IMediator _mediator;
+
+        HangFireJobs hangFireJobs = new HangFireJobs();
         public BookController( IMediator mediator){
                 
               _mediator = mediator;
@@ -44,17 +47,16 @@ namespace apiHangFire.Controllers
        [HttpPost]
        public async Task<ActionResult> CreateBook([FromBody] CreateBookCommands commnds){
 
+          
+
             var result = await _mediator.Send(commnds);
 
-            var jobId = BackgroundJob.Enqueue(() => CreateJobForAddBook());
-            return Ok(jobId);
+            var jobId = BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
+
+            return Ok(result);
        }
 
-        public void CreateJobForAddBook()
-        {
-            //Logic to Mail the user
-            Console.WriteLine($"The Book Was  Created Succesfully");
-        }
+
 
     }
 }
