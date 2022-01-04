@@ -53,7 +53,7 @@ namespace apiHangFire.Controllers
 
             var jobId = BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
 
-            return Ok(result);
+            return Ok(jobId);
        }
 
 
