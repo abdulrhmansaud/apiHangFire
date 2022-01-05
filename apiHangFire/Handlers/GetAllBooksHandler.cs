@@ -6,12 +6,18 @@ using apiHangFire.Data;
 using apiHangFire.Dtos;
 using apiHangFire.Queries;
 using MediatR;
-
+using apiHangFire.HangFire;
+using System;
+using Hangfire;
 
 namespace apiHangFire.Handlers
 {
     public class GetAllBooksHandler : IRequestHandler<GetAllBooksQuery, List<BookReadDto>>
     {
+
+
+        HangFireJobs hangFireJobs = new HangFireJobs();
+
         private readonly IBookRepo _repository; 
         private readonly IMapper _mapper; 
         public GetAllBooksHandler(IBookRepo repository, IMapper mapper){
@@ -25,9 +31,13 @@ namespace apiHangFire.Handlers
         {
 
             var getAllBook =  await _repository.GetAllBooks();
-             
+
+            BackgroundJob.Enqueue(() => hangFireJobs.CreateJobAllbooks());
+            BackgroundJob.Schedule(() => hangFireJobs.CreateJobAllbooks(), TimeSpan.FromMinutes(4));
 
             return _mapper.Map<List<BookReadDto>>(getAllBook);
+
+
         }
     }
 }

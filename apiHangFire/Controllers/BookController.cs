@@ -20,7 +20,6 @@ namespace apiHangFire.Controllers
     {
         private readonly IMediator _mediator;
 
-        HangFireJobs hangFireJobs = new HangFireJobs();
         public BookController( IMediator mediator){
                 
               _mediator = mediator;
@@ -31,9 +30,6 @@ namespace apiHangFire.Controllers
           
              var query = new GetAllBooksQuery();
              var result = await _mediator.Send(query);
-
-             BackgroundJob.Enqueue(() => hangFireJobs.CreateJobAllbooks());
-           
             return Ok(result);
        }
 
@@ -43,8 +39,6 @@ namespace apiHangFire.Controllers
           var query = new GetBooksByIdQuery(id);
           var result = await _mediator.Send(query);
 
-            BackgroundJob.Enqueue(() => hangFireJobs.GetBooksById());
-
           return result != null ? Ok(result) : NotFound();
        }
 
@@ -53,16 +47,12 @@ namespace apiHangFire.Controllers
             try
             {
                 await _mediator.Send(commnds);
-                BackgroundJob.Enqueue(() => hangFireJobs.CreateJobForAddBook());
                 return Ok("Book added Successfully");
-
             }
             catch (Exception ex)
             {
-  
-               return StatusCode(500);
-             }
-
+               return StatusCode(500,ex);
+            }
        }
     }
 }
