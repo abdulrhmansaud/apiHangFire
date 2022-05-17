@@ -1,11 +1,10 @@
-using System;
-using AutoMapper.Configuration.Annotations;
+using apiHangFire.Enums;
+
 
 namespace apiHangFire.Dtos
 {
     public class BookReadDto
     {
-     
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -13,5 +12,7 @@ namespace apiHangFire.Dtos
         public string Author { get; set; }
 
         public bool availability { get; set; }
+
+        public BooksType types { get; set; }
     }
 }

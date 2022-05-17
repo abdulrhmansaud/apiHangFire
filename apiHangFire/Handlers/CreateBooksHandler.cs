@@ -9,6 +9,7 @@ using MediatR;
 using System;
 using Hangfire;
 using apiHangFire.HangFire;
+using apiHangFire.Enums;
 
 namespace apiHangFire.Handlers
 {
@@ -18,12 +19,15 @@ namespace apiHangFire.Handlers
         HangFireJobs hangFireJobs = new HangFireJobs();
 
         private readonly IBookRepo _repository; 
-        private readonly IMapper _mapper; 
+        private readonly IMapper _mapper;
+      
+  
         public CreateBooksHandler(IBookRepo repository, IMapper mapper){
 
             _mapper = mapper; 
             _repository = repository;
-
+      
+          
         }
 
         public async Task<BookReadDto> Handle(CreateBookCommands request, CancellationToken cancellationToken)
@@ -33,6 +37,7 @@ namespace apiHangFire.Handlers
           books.Description = request.Description;
           books.Author = request.Author;
           books.availability = request.availability;
+          books.types = request.types;
           await _repository.CreateBooks(books);
            _repository.SaveChanges();
 

@@ -1,3 +1,5 @@
+using apiHangFire.Enums;
+
 namespace apiHangFire.Dtos
 {
     public class BookCreateDto
@@ -9,6 +11,8 @@ namespace apiHangFire.Dtos
 
         public string Author { get; set; }
 
-        public bool availability { get; set; } 
+        public bool availability { get; set; }
+
+        public BooksType types { get; set; }
     }
 }

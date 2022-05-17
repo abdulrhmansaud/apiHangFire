@@ -1,12 +1,12 @@
 using System;
 using apiHangFire.Dtos;
+using apiHangFire.Enums;
 using MediatR;
 
 namespace apiHangFire.Commands
 {
     public class CreateBookCommands : IRequest<BookReadDto>
     {
-
         public int Id { get; set; }
         public string Title { get; set; }
 
@@ -15,5 +15,7 @@ namespace apiHangFire.Commands
         public string Author { get; set; }
 
         public bool availability { get; set; }
+
+        public BooksType types { get; set; }
     }
 }

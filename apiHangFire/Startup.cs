@@ -44,7 +44,11 @@ namespace apiHangFire
           
             services.AddHangfireServer();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.IgnoreNullValues = true;
+                o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+            });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddMediatR(typeof(Startup));
