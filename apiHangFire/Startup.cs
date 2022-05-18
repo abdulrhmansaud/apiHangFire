@@ -1,6 +1,4 @@
-using apiHangFire.DbConnection;
 using Hangfire;
-using apiHangFire.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,10 +11,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using MediatR;
-using apiHangFire.Commands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure;
+using Application;
 
 namespace apiHangFire
 {
@@ -33,15 +32,14 @@ namespace apiHangFire
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var connection = Configuration.GetConnectionString("default");
-            services.AddDbContext<Dbconnect>(options => options.UseSqlServer(connection));
-            services.AddHangfire(opt => opt.UseSqlServerStorage(connection));
+           
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiHangFire", Version = "v1" });
             });
-          
+            services.AddInfrastructure(Configuration);
+            services.AddApplication();
             services.AddHangfireServer();
 
             services.AddControllers().AddJsonOptions(o =>
@@ -49,9 +47,8 @@ namespace apiHangFire
                 o.JsonSerializerOptions.IgnoreNullValues = true;
                 o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IBookRepo, BookRepo>();
-            services.AddMediatR(typeof(Startup));
+            
+            
 
         }
 

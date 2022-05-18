@@ -1,19 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using apiHangFire.Model;
-using apiHangFire.Data;
 using System.Collections.Generic;
 using AutoMapper;
-using apiHangFire.Dtos;
 using MediatR;
-using apiHangFire.Queries;
 using System.Threading.Tasks;
-using apiHangFire.Commands;
 using System;
 using Hangfire;
-using apiHangFire.HangFire;
+using Application.CQRS.Book.Commands;
+using Application.CQRS.Book.Queries;
 
 namespace apiHangFire.Controllers
-{ 
+{
     [Route("api/books")]
     [ApiController]
     public class BookController : ControllerBase
